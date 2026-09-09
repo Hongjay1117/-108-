@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>陸航標準化選擇108題</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 15px;
+    font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", Arial, sans-serif;
+    background: #f2f2f2;
+    color: #222;
+}
+
+.container {
+    max-width: 700px;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+    font-size: 24px;
+    margin: 10px 0 5px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+button {
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    background: #333;
+    color: white;
+}
+
+button:active {
+    transform: scale(.98);
+}
+
+.card {
+    background: white;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+    margin-bottom: 15px;
+}
+
+.progress {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.question {
+    font-size: 19px;
+    font-weight: bold;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.option {
+    width: 100%;
+    text-align: left;
+    background: #fafafa;
+    color: #222;
+    border: 1px solid #ddd;
+    margin: 7px 0;
+    font-weight: normal;
+    line-height: 1.5;
+}
+
+.option:hover {
+    background: #eee;
+}
+
+.correct {
+    background: #d9f7df !important;
+    border: 2px solid #27a745 !important;
+}
+
+.wrong {
+    background: #ffe0e0 !important;
+    border: 2px solid #dc3545 !important;
+}
+
+.disabled {
+    pointer-events: none;
+}
+
+.result {
+    padding: 12px;
+    border-radius: 10px;
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+.result.ok {
+    background: #d9f7df;
+    color: #176b2c;
+}
+
+.result.no {
+    background: #ffe0e0;
+    color: #a30000;
+}
+
+.hidden {
+    display: none;
+}
+
+.score {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.back {
+    background: #666;
+    margin-bottom: 15px;
+}
+
+.small {
+    font-size: 13px;
+    color: #777;
+    text-align: center;
+    margin-top: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>保修專業學科題庫</h1>
+<div class="subtitle">109年版｜共108題<br>洪冠傑製作</div>
+
+<div id="menu">
+
+    <div class="menu">
+        <button onclick="startQuiz(20)">隨機20題</button>
+        <button onclick="startQuiz(30)">隨機30題</button>
+        <button onclick="startQuiz(108)">全部108題</button>
+        <button onclick="startWrong()">錯題再練</button>
+    </div>
+
+    <div class="card">
+        <b>使用方式</b><br><br>
+        選擇答案後會立即顯示對錯。<br>
+        答錯的題目會自動加入「錯題再練」。
+    </div>
+
+</div>
+
+<div id="quizArea" class="hidden">
+
+    <button class="back" onclick="backMenu()">← 回主選單</button>
+
+    <div class="card">
+
+        <div id="progress" class="progress"></div>
+
+        <div id="question" class="question"></div>
+
+        <div id="options"></div>
+
+        <div id="result"></div>
+
+    </div>
+
+    <button id="nextBtn" class="hidden" onclick="nextQuestion()">
+        下一題
+    </button>
+
+</div>
+
+<div id="finishArea" class="hidden">
+
+    <div class="card">
+
+        <div class="score" id="score"></div>
+
+        <div id="finishText"></div>
+
+        <br>
+
+        <button onclick="backMenu()">回主選單</button>
+
+        <br><br>
+
+        <button onclick="startWrong()">錯題再練</button>
+
+    </div>
+
+</div>
+
+<div class="small">
+保修專業學科題庫｜108題
+</div>
+
+</div>
+
+
+<script>
+
+const questions = [
+
+/* ==================== 1-20 ==================== */
+
+{
+n:1,
+q:"現代戰爭以何為主導？",
+o:["整體作戰","機動作戰","資訊作戰"],
+a:0
+},
+
+{
+n:2,
+q:"基於對戰爭及國力的認識，所產生對有形戰力整備與運用的基本主張為何者之要旨？",
+o:["後勤思想","作戰構想","後勤政策"],
+a:0
+},
+
+{
+n:3,
+q:"後勤工作即為何種工作？",
+o:["服務工作","補給工作","維修工作"],
+a:0
+},
+
+{
+n:4,
+q:"後勤猶如作戰用兵，何者為成敗主要因素？",
+o:["地點","數量","時間"],
+a:2
+},
+
+{
+n:5,
+q:"何者為主動應變、有效支援作戰之重要因素？",
+o:["鈍重性","機動性","彈性"],
+a:2
+},
+
+{
+n:6,
+q:"何者為確保後勤持續戰力、有效支援作戰之基本要求？",
+o:["節約","安全","迅速"],
+a:1
+},
+
+{
+n:7,
+q:"建立、維持與發展後勤有效活動之規律為何？",
+o:["後勤制度","後勤政策","後勤思想"],
+a:2
+},
+
+{
+n:8,
+q:"戰鬥間後勤支援強調何種運補？",
+o:["直達運補","間接補給","民間徵調"],
+a:0
+},
+
+{
+n:9,
+q:"油料儲存處方圓100、150、200公尺以內為禁區，應嚴禁煙火。",
+o:["100","150","200"],
+a:0
+},
+
+{
+n:10,
+q:"飛機實施單邊項高作業時，滑梯離地不得超過？",
+o:["6吋","8吋","12吋"],
+a:0
+},
+
+{
+n:11,
+q:"飛機繫留時機頭之位置為何？",
+o:["順風","準風","東北風"],
+a:1
+},
+
+{
+n:12,
+q:"吊掛使用後，應使吊鉤離地線公尺？",
+o:["1公尺","2公尺","3公尺"],
+a:1
+},
+
+{
+n:13,
+q:"推拖飛機時速度不可以超過每小時？",
+o:["7哩","6哩","5哩"],
+a:2
+},
+
+{
+n:14,
+q:"執行飛機加油勤務時，機工長應持滅火機在加油口上風？處實施警戒。",
+o:["3～5呎","5～8呎","10～15呎"],
+a:0
+},
+
+{
+n:15,
+q:"不相信安全的工作方法或不遵守安全規則，屬於下列中那一項？",
+o:["不知","不理","粗心"],
+a:1
+},
+
+{
+n:16,
+q:"噪音標準為？",
+o:["95分貝","75分貝","85分貝"],
+a:2
+},
+
+{
+n:17,
+q:"測試氣焊設備有無洩漏應以？",
+o:["打火機","汽油","肥皂水檢查"],
+a:2
+},
+
+{
+n:18,
+q:"為防止掉落超過幾呎以上之工作梯、升降梯，需加裝防護裝備？",
+o:["20呎","15呎","10呎"],
+a:2
+},
+
+{
+n:19,
+q:"乙炔皮管以何種顏色識別？",
+o:["綠","紅","黃色"],
+a:1
+},
+
+{
+n:20,
+q:"飛機停放時防火巷寬度至少應有？",
+o:["50呎","55呎","60呎"],
+a:0
+},
+
+
+/* ==================== 21-40 ==================== */
+
+{
+n:21,
+q:"鉛與鋅錫電瓶？",
+o:["不可以放置一起","不可同時運輸","以上皆對"],
+a:2
+},
+
+{
+n:22,
+q:"庫房電路系統應每半年、每年或每季通知電力公司全部檢查乙次，檢查缺失需逐次徹底改進，並做記錄呈上級核備。",
+o:["半年","一年","每季"],
+a:0
+},
+
+{
+n:23,
+q:"加油前，飛機及油車應完成？",
+o:["飛機搭地","油車搭地","三角搭地"],
+a:2
+},
+
+{
+n:24,
+q:"吊掛之吊鉤及固定螺桿應每多久執行非破壞性NDI檢查乙次，並記錄備查？",
+o:["三個月","半年","一年"],
+a:1
+},
+
+{
+n:25,
+q:"感電救人第一步？",
+o:["人工呼吸","切斷電源","送醫"],
+a:1
+},
+
+{
+n:26,
+q:"避雷針接地電阻值應保持？歐姆以下。",
+o:["9","10","11"],
+a:1
+},
+
+{
+n:27,
+q:"氧氣皮管以何種顏色識別？",
+o:["綠","紅","黃色"],
+a:0
+},
+
+{
+n:28,
+q:"距離乙炔發火器？公尺以內嚴禁吸煙或有火花。",
+o:["5","6","7"],
+a:0
+},
+
+{
+n:29,
+q:"OH-58D直升機在平坦經整理之地面，拖曳重量總重超過？磅時，必須使用後橫管固定連桿。",
+o:["2500","3500","4500"],
+a:2
+},
+
+{
+n:30,
+q:"硫酸儲放區必須？",
+o:["遠離水源","接近水源","無限制"],
+a:0
+},
+
+{
+n:31,
+q:"以手推車裝載重物應擺置於？",
+o:["上層","中層","下層"],
+a:2
+},
+
+{
+n:32,
+q:"油車在機場坪行駛速限？",
+o:["8公里","9公里","10公里"],
+a:0
+},
+
+{
+n:33,
+q:"嚴格管制零附件拆移與併修，惟緊急情況下或為使裝備妥善，按？規定。",
+o:["技令","修護作業規定","各型機拆移作業規定"],
+a:2
+},
+
+{
+n:34,
+q:"各航空專業工廠應確依何種觀念執行各項修護工作？",
+o:["品質管理與品質保證","妥善率","工時"],
+a:0
+},
+
+{
+n:35,
+q:"本軍航空部隊保修督導單位為何？",
+o:["國防部","司令部後勤處","航特部"],
+a:1
+},
+
+{
+n:36,
+q:"叉動車行駛中重物離地應保持多少距離？",
+o:["只離地6～8吋","只離地4～6吋","只離地8吋～10吋"],
+a:0
+},
+
+{
+n:37,
+q:"每次使用啟動發動機後，需相隔多久時間？",
+o:["3分鐘","5分鐘","8分鐘"],
+a:0
+},
+
+{
+n:38,
+q:"對所需修理之裝備及分件總成，應先行？俟於開始修理前，決定所需修理範圍。",
+o:["修理","檢驗","防腐防鏽"],
+a:1
+},
+
+{
+n:39,
+q:"清潔、防護、潤滑、調整、檢查、測試屬修護階層為？",
+o:["單位保養","野戰保修","基地修護"],
+a:0
+},
+
+{
+n:40,
+q:"定期更換件之執行屬？",
+o:["單位保養","野戰保修","基地修護"],
+a:1
+},
+
+
+/* ==================== 41-60 ==================== */
+
+{
+n:41,
+q:"技術通報有關命令內容摘要調製？",
+o:["品管分析月報","飛安公告","地安公告"],
+a:2
+},
+
+{
+n:42,
+q:"飛機滑油分光分析作業之依據？",
+o:["空軍特技發一四四號","MIL-H-83282A","空軍一六三號"],
+a:0
+},
+
+{
+n:43,
+q:"發動機之維修屬非定期維修屬？",
+o:["單位","野戰","基地"],
+a:1
+},
+
+{
+n:44,
+q:"A、O、U型機進入週（階）檢屆期前？小時，由補給人員辦理料件預簽。",
+o:["15小時","25小時","35小時"],
+a:1
+},
+
+{
+n:45,
+q:"滑油抽樣，將管子另一端插入油槽內約？深度。",
+o:["1/2","2/3","1/4"],
+a:1
+},
+
+{
+n:46,
+q:"航保手冊為執行修護業務及工作依據，應納入？",
+o:["補給系統","保修系統","技令系統管理"],
+a:2
+},
+
+{
+n:47,
+q:"拆檢費用不得超過新品價格百分之多少？",
+o:["5%","10%","15%"],
+a:0
+},
+
+{
+n:48,
+q:"對維修裝備進行結構或設計進行改變、更新者為性能提升，性能提升部分保固幾年？",
+o:["1年","2年","3年"],
+a:0
+},
+
+{
+n:49,
+q:"乙方在完成拆檢或勘估等工作後，陸軍司令部有急需之品項，乙方須於幾日工作天內向陸軍司令部提出拆檢報告？",
+o:["3日內","5日內","7日內"],
+a:2
+},
+
+{
+n:50,
+q:"與職務或利益有關廠商饋贈之禮物，其價值在新臺幣幾百元以下，如不接受反不符合社會禮儀或習俗者，得予接受？",
+o:["300元內","500元內","700元內"],
+a:1
+},
+
+{
+n:51,
+q:"採購法所稱未達公告金額十分之一係指新台幣多少錢？",
+o:["30萬元","20萬元","10萬元"],
+a:2
+},
+
+{
+n:52,
+q:"乙方須於多少工作日內提供承修陸軍司令部標的物之國內拆檢報告？",
+o:["30","40","50"],
+a:0
+},
+
+{
+n:53,
+q:"飛機裝備拆移作業規定擬訂與頒佈由？",
+o:["司令部","航特部","航勤廠"],
+a:1
+},
+
+{
+n:54,
+q:"軍品檢驗標準分類代號運輸以？表示。",
+o:["A","B","T"],
+a:2
+},
+
+{
+n:55,
+q:"在本待料情況下，01至03緊急交修項目，應在？日內修妥。",
+o:["3日內","7日內","10日內"],
+a:1
+},
+
+{
+n:56,
+q:"定期更換件屆期前？小時向機隊管理中心報告。",
+o:["100小時","200小時","300小時"],
+a:1
+},
+
+{
+n:57,
+q:"待修件因損壞嚴重，超過單價？者，由野戰或基地報廢。",
+o:["50%","65%","80%"],
+a:1
+},
+
+{
+n:58,
+q:"工作優先代表發動機更換？",
+o:["01","03","05"],
+a:2
+},
+
+{
+n:59,
+q:"保修工作申請表歸檔，保存？個會計年度。",
+o:["1","3","5"],
+a:2
+},
+
+{
+n:60,
+q:"清點不符辦理調整應填何種表單？",
+o:["軍品調整報告表","軍品調查報告表","軍品補給作業單","二級存量增列、刪除表"],
+a:0
+},
+
+
+/* ==================== 61-80 ==================== */
+
+{
+n:61,
+q:"三級核儲項目表填寫排序方式為何？",
+o:["按裝備類別排序","按料號由大至小排序","按料號由小至大排序","按計量單位排序"],
+a:2
+},
+
+{
+n:62,
+q:"庫房料架應裝訂何種表卡？",
+o:["軍品存量卡","料架卡","軍品補給作業單","儲位卡"],
+a:1
+},
+
+{
+n:63,
+q:"三級應建立幾日份之存量？",
+o:["四十日","三十日","二十五日","十五日"],
+a:0
+},
+
+{
+n:64,
+q:"以修訂配賦量公式所換算出的數值，若有小數點應如何處理？",
+o:["四捨五入","進位法","拾尾法"],
+a:0
+},
+
+{
+n:65,
+q:"帳籍校正相符率低於百分之多少以下，單位應確實檢討原因？",
+o:["九十","九十五","八十","八十五"],
+a:1
+},
+
+{
+n:66,
+q:"補給單位欠撥受補單位一年以上項目應？",
+o:["每月","每季","每半年徵詢一次"],
+a:1
+},
+
+{
+n:67,
+q:"三級零附件帳卡歸檔後應保存？",
+o:["一年","二年","三年"],
+a:1
+},
+
+{
+n:68,
+q:"技術通報代號是？",
+o:["TB","SB","TM"],
+a:0
+},
+
+{
+n:69,
+q:"不適用超量之技術書刊，應？",
+o:["自行焚燬","循序繳回","撥發下級單位","以上皆可"],
+a:1
+},
+
+{
+n:70,
+q:"飛機停放野戰場地無搭地樁時，應將搭地棒插入地面？公尺後使用。",
+o:["30公尺","31公尺","32公尺"],
+a:0
+},
+
+{
+n:71,
+q:"X光照相區應距離？公尺處，用繩子圍繞，並置放警告牌禁止人員禁入。",
+o:["40","50","60"],
+a:1
+},
+
+{
+n:72,
+q:"清洗發動機時應將主旋翼拉至與機身成幾度之位置？",
+o:["90度","120度","60度"],
+a:0
+},
+
+{
+n:73,
+q:"申請憑單管制區分填寫錯誤，補給單位審核該憑單時，應予？",
+o:["代為更正","剔退","核減其申請數量後同時通知更正"],
+a:0
+},
+
+{
+n:74,
+q:"逾期提領撤銷沖回後？",
+o:["不再重建欠撥","仍列欠撥但核減數量","剔退"],
+a:0
+},
+
+{
+n:75,
+q:"列管可修件項目在每日異動項目分戶清單OL-333表顯示「*」於？欄。",
+o:["AC","MC","RE"],
+a:2
+},
+
+{
+n:76,
+q:"二級配賦量，應建立？日份。",
+o:["15日份","30日份","60日份"],
+a:0
+},
+
+{
+n:77,
+q:"二級存量表需求檢討管制週期為？",
+o:["30天","90天","180天"],
+a:2
+},
+
+{
+n:78,
+q:"二級補給單位對管制週期需求經驗在？",
+o:["一次","二次","三次","四次以上"],
+a:2
+},
+
+{
+n:79,
+q:"核定儲存項目表審核代號中審核同意代號為？",
+o:["DB","BB","BC","BD"],
+a:0
+},
+
+{
+n:80,
+q:"保管中之待修品發生遺損，其核賠標準按新品單價之？",
+o:["100%","25%","30%"],
+a:1
+},
+
+
+/* ==================== 81-100 ==================== */
+
+{
+n:81,
+q:"憑單歸檔後發現遺失，經？天無法尋獲者，即確認為遺失。",
+o:["十天","十五天","二十天"],
+a:2
+},
+
+{
+n:82,
+q:"技術手冊的代號是？",
+o:["TB","TM","LD"],
+a:1
+},
+
+{
+n:83,
+q:"受補單位之申請憑單上管制區分欄填錯，審核人員應？",
+o:["剔除","核減數量","代為更正"],
+a:2
+},
+
+{
+n:84,
+q:"三級之管制週期為？",
+o:["180天","360天","90天"],
+a:1
+},
+
+{
+n:85,
+q:"貴重而需維護之軍品應採？",
+o:["露儲","棚儲","庫儲較宜"],
+a:2
+},
+
+{
+n:86,
+q:"不正常損壞之待修品除應檢附25-015表及補15-002表外仍須送繳實物，實物以素質？接收進帳並轉繳上級單位。",
+o:["6","7","8"],
+a:0
+},
+
+{
+n:87,
+q:"軍品存量登記卡中，應用鉛筆登記者為？",
+o:["品名欄","料號欄","基準量欄"],
+a:2
+},
+
+{
+n:88,
+q:"「國軍用兵後勤管理系統－前支作業功能」內管制表綠色燈號代表為何？",
+o:["正常無前支需求","前支需求處理中，尚未結案","前支需求尚未處理"],
+a:0
+},
+
+{
+n:89,
+q:"「國軍用兵後勤管理系統－前支作業功能」多少時間內會自動更新需求？",
+o:["5分鐘","10分鐘","15分鐘"],
+a:1
+},
+
+{
+n:90,
+q:"「國軍用兵後勤管理系統」包含幾個子系統？",
+o:["1個","2個","3個"],
+a:2
+},
+
+{
+n:91,
+q:"依前支作業規定中，保修及零附件整備時限為何？",
+o:["15分鐘內","30分鐘內","60分鐘內"],
+a:1
+},
+
+{
+n:92,
+q:"依前支作業規定中，地區內單位或過境部隊使用裝備損壞屬幾級維修權責？",
+o:["1級","2級","3級"],
+a:2
+},
+
+{
+n:93,
+q:"核定儲存項目之修訂及增刪應於何時辦理？",
+o:["六個月及三個月","三個月及一個月","六個月及一個月"],
+a:2
+},
+
+{
+n:94,
+q:"過去十二個月內三次以上需求數為60個，核定存量日份為40日份，其基準量為？",
+o:["15個","20個","7個"],
+a:2
+},
+
+{
+n:95,
+q:"補給單位對受補單位呈報之核定儲存項目表最遲應？核覆。",
+o:["一週","二週","一月內"],
+a:1
+},
+
+{
+n:96,
+q:"對無補給狀況之憑單超過幾日需對上查詢？",
+o:["五日","七日","十日"],
+a:2
+},
+
+{
+n:97,
+q:"憑單單號識別欄CF3代表？",
+o:["欠撥主動查詢","欠撥主動撤銷","欠撥被動撤銷"],
+a:1
+},
+
+{
+n:98,
+q:"計量單位「BX」表示？",
+o:["百箱","箱","包","組、套"],
+a:1
+},
+
+{
+n:99,
+q:"○有需求經驗項目○戰鬥必需項目○未列入戰鬥必需項目應在補25-007表上用紅「√」加以標示。",
+o:["有需求經驗項目","戰鬥必需項目","未列入戰鬥必需項目"],
+a:1
+},
+
+{
+n:100,
+q:"野戰保修廠對直接交換項目表內所列項目？",
+o:["每月","每季","每半年","每年"],
+a:1
+},
+
+
+/* ==================== 101-108 ==================== */
+
+{
+n:101,
+q:"三級撥發二級，自提時限是？",
+o:["3天","5天","7天"],
+a:2
+},
+
+{
+n:102,
+q:"地區內單位或過境部隊使用裝備損壞屬哪一級維修權責？",
+o:["一級","二級","三級"],
+a:2
+},
+
+{
+n:103,
+q:"依前支作業規定中，戰時輔以電話、傳真等備援機制提出，惟於任務完成後幾日內，仍須完成帳籍補正、除帳作業？",
+o:["1天","2天","3天"],
+a:2
+},
+
+{
+n:104,
+q:"前支所需基本作業機裝具，平時均應成套放置於哪裡？",
+o:["機工具間內","配屬工程車","以上皆是"],
+a:2
+},
+
+{
+n:105,
+q:"前支作業所需各式輸具平時應完成整備，並備足油料，各項需求均以專案向哪裡申請？",
+o:["後支部","指揮部","司令部"],
+a:0
+},
+
+{
+n:106,
+q:"「國軍用兵後勤管理系統－前支作業功能」有幾項功能？",
+o:["6","7","8"],
+a:1
+},
+
+{
+n:107,
+q:"「國軍用兵後勤管理系統－前支作業功能」內管制表黃色燈號代表何意？",
+o:["正常無前支需求","前支需求處理中，尚未結案","前支需求尚未處理"],
+a:1
+},
+
+{
+n:108,
+q:"「國軍用兵後勤管理系統－前支作業功能」內管制表紅色燈號代表何意？",
+o:["正常無前支需求","前支需求處理中，尚未結案","前支需求尚未處理"],
+a:2
+}
+
+];
+
+
+
+/* ==================== 程式 ==================== */
+
+let quiz = [];
+let current = 0;
+let score = 0;
+let answered = false;
+
+let wrongQuestions =
+    JSON.parse(localStorage.getItem("wrongQuestions") || "[]");
+
+
+function shuffle(array) {
+    return [...array].sort(() => Math.random() - 0.5);
+}
+
+
+function startQuiz(number) {
+
+    if (number === 108) {
+        quiz = shuffle(questions);
+    } else {
+        quiz = shuffle(questions).slice(0, number);
+    }
+
+    current = 0;
+    score = 0;
+
+    document.getElementById("menu").classList.add("hidden");
+    document.getElementById("finishArea").classList.add("hidden");
+    document.getElementById("quizArea").classList.remove("hidden");
+
+    showQuestion();
+}
+
+
+function startWrong() {
+
+    if (wrongQuestions.length === 0) {
+        alert("目前沒有錯題！");
+        return;
+    }
+
+    quiz = questions.filter(q =>
+        wrongQuestions.includes(q.n)
+    );
+
+    quiz = shuffle(quiz);
+
+    current = 0;
+    score = 0;
+
+    document.getElementById("menu").classList.add("hidden");
+    document.getElementById("finishArea").classList.add("hidden");
+    document.getElementById("quizArea").classList.remove("hidden");
+
+    showQuestion();
+}
+
+
+function showQuestion() {
+
+    answered = false;
+
+    const q = quiz[current];
+
+    document.getElementById("progress").innerText =
+        `第 ${current + 1} / ${quiz.length} 題　｜　題庫第 ${q.n} 題`;
+
+    document.getElementById("question").innerText =
+        `${q.n}. ${q.q}`;
+
+    const options =
+        document.getElementById("options");
+
+    options.innerHTML = "";
+
+    q.o.forEach((text, index) => {
+
+        const btn = document.createElement("button");
+
+        btn.className = "option";
+
+        btn.innerText =
+            `${["①","②","③","④"][index]} ${text}`;
+
+        btn.onclick = () =>
+            answerQuestion(index);
+
+        options.appendChild(btn);
+
+    });
+
+    document.getElementById("result").innerHTML = "";
+
+    document.getElementById("nextBtn")
+        .classList.add("hidden");
+}
+
+
+function answerQuestion(choice) {
+
+    if (answered) return;
+
+    answered = true;
+
+    const q = quiz[current];
+
+    const buttons =
+        document.querySelectorAll(".option");
+
+    buttons.forEach(btn =>
+        btn.classList.add("disabled")
+    );
+
+    buttons[q.a].classList.add("correct");
+
+    if (choice === q.a) {
+
+        score++;
+
+        document.getElementById("result").innerHTML =
+            `<div class="result ok">
+                ✓ 答對了！
+            </div>`;
+
+        removeWrong(q.n);
+
+    } else {
+
+        buttons[choice].classList.add("wrong");
+
+        saveWrong(q.n);
+
+        document.getElementById("result").innerHTML =
+            `<div class="result no">
+                ✗ 答錯了！<br>
+                正確答案：${["①","②","③","④"][q.a]}
+                ${q.o[q.a]}
+            </div>`;
+    }
+
+    document.getElementById("nextBtn")
+        .classList.remove("hidden");
+}
+
+
+function nextQuestion() {
+
+    current++;
+
+    if (current >= quiz.length) {
+        finishQuiz();
+    } else {
+        showQuestion();
+        window.scrollTo(0,0);
+    }
+}
+
+
+function finishQuiz() {
+
+    document.getElementById("quizArea")
+        .classList.add("hidden");
+
+    document.getElementById("finishArea")
+        .classList.remove("hidden");
+
+    const percent =
+        Math.round(score / quiz.length * 100);
+
+    document.getElementById("score").innerText =
+        `${score} / ${quiz.length}　${percent}%`;
+
+    document.getElementById("finishText").innerHTML =
+        `本次答題完成！<br><br>
+         答對：${score} 題<br>
+         答錯：${quiz.length - score} 題<br>
+         目前錯題庫：${wrongQuestions.length} 題`;
+}
+
+
+function saveWrong(number) {
+
+    if (!wrongQuestions.includes(number)) {
+
+        wrongQuestions.push(number);
+
+        localStorage.setItem(
+            "wrongQuestions",
+            JSON.stringify(wrongQuestions)
+        );
+    }
+}
+
+
+function removeWrong(number) {
+
+    wrongQuestions =
+        wrongQuestions.filter(n => n !== number);
+
+    localStorage.setItem(
+        "wrongQuestions",
+        JSON.stringify(wrongQuestions)
+    );
+}
+
+
+function backMenu() {
+
+    document.getElementById("quizArea")
+        .classList.add("hidden");
+
+    document.getElementById("finishArea")
+        .classList.add("hidden");
+
+    document.getElementById("menu")
+        .classList.remove("hidden");
+
+    window.scrollTo(0,0);
+}
+
+</script>
+
+</body>
+</html>
